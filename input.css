@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+.cellcss {
+    @apply bg-orange-400 text-white rounded w-20 h-20 border-2 border-amber-800 text-center cursor-pointer pt-2.5 
+    hover:shadow-[0_0_15px_rgb(255,255,255)] hover:z-50 active:shadow-[0_0_15px_rgb(200,200,200)] active:z-50 hover:scale-102;
+}

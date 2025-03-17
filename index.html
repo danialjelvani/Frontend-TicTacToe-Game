@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>tick tack toe</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="./output.css" rel="stylesheet">
+    </head>
+
+    <body class="m-10 bg-amber-400">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <section>
+            <h1 class="game--title font-extrabold text-3xl text-center mt-15">Tic Tac Toe :)</h1>
+            <div class="game--container grid grid-cols-3 justify-self-center mt-20 mb-10 text-5xl">
+              <div data-cell-index="0" class="cell cellcss"></div>
+              <div data-cell-index="1" class="cell cellcss"></div>
+              <div data-cell-index="2" class="cell cellcss"></div>
+              <div data-cell-index="3" class="cell cellcss"></div>
+              <div data-cell-index="4" class="cell cellcss"></div>
+              <div data-cell-index="5" class="cell cellcss"></div>
+              <div data-cell-index="6" class="cell cellcss"></div>
+              <div data-cell-index="7" class="cell cellcss"></div>
+              <div data-cell-index="8" class="cell cellcss"></div>
+            </div>
+            <h2 class="game--status text-xl font-semibold text-center mb-10">Turn : X</h2>
+            <button class="game--restart text-center rounded-sm font-semibold cursor-pointer hover:shadow-md hover:shadow-black hover:scale-x-102 active:shadow-stone-600 active:bg-amber-500 text-lg border-4 w-40 h-12 absolute left-1/2 -translate-x-1/2">Restart Game</button>
+        </section>
+
+        <script>
+            let status = document.querySelector(".game--status");
+            let restart = document.querySelector(".game--restart")
+            let container = document.querySelector(".game--container");
+            let currentplayer = "X";
+            let X_scores = [];
+            let O_scores = [];
+            const win_patterns = [["0","1","2"], ["3","4","5"], ["6","7","8"], ["0","3","6"], ["1","4","7"], ["2","5","8"], ["0","4","8"], ["2","4","6"]];
+            let winner = null;
+            let gameactive = true;
+
+            function handleclick (e) {
+                if (!gameactive) return;
+                if (e.target.classList.contains("cell") && e.target.innerHTML === "") {
+                    e.target.innerHTML = currentplayer;
+                    currentplayer === "X" ? X_scores.push(e.target.dataset.cellIndex) : O_scores.push(e.target.dataset.cellIndex);
+                    win_patterns.forEach(pattern => {
+                        if (pattern.every(num => X_scores.includes(num)) || pattern.every(num => O_scores.includes(num))) {
+                            winner = currentplayer;
+                        }});
+                        if (winner) {
+                            status.innerHTML = `Player ${currentplayer} Has Won !`;
+                            gameactive = false;
+                        } else if (X_scores.length + O_scores.length === 9) {
+                            status.innerHTML = "No Winner :(";
+                            gameactive = false;
+                        } else {
+                            currentplayer = currentplayer === "X" ? "O" : "X";
+                            status.innerHTML = `Turn : ${currentplayer}`;
+                        }
+                }};
+
+            container.addEventListener("click", handleclick)
+
+            restart.addEventListener("click", () => {
+                for (let i of container.children) {i.innerHTML = ""};
+                currentplayer = winner ? winner : currentplayer === "X" ? "O" : "X";
+                winner = null;
+                X_scores = [];
+                O_scores = [];
+                status.innerHTML = `Turn : ${currentplayer}`;
+                gameactive = true;
+            })
+
+
+
+
+        </script>
+    </body>
+</html>
